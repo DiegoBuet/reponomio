@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Truco</title>
+        <link href="jstilo.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="scripts.js"></script>
+	</head>
+	<body class="green">
+        <div class="visible" id="pant1">
+            <div class="contEq">
+                <br/>
+                <input type="text" placeholder="Equipo 1" id="eq1" class="eq">
+                <br/><br/>
+                <input type="text" placeholder="Equipo 2" id="eq2" class="eq">
+                <br/><br/>
+            </div><br/>
+            <div class="contBts">
+                <br/>
+                <input type="button" id="a24" value="A 24" class="bts">
+                <input type="button" id="a30" value="A 30" class="bts">
+                <br/>
+            </div><br/>
+            <div class="contIn">
+                <input type="button" id="inicio" value="iniciar" class="botI">
+            </div>
+        </div>   
+
+        <div class="oculto" id="pant2">
+            <div class="juego">
+	
+                <div class="dis1">
+                    <input type="button" id="s1" value="+" class="btsMas">
+                    <h2 id="ne1"></h2>
+                </div>
+                <div class="dis2">
+                    <input type="button" id="s2" value="+" class="btsMas">
+                    <h2 id="ne2"></h2>
+                </div>
+
+                <div class="recuadroPuntos">
+                    <!-- arriba 1 -->
+                    <img class="img" id="p11" src="0.png" />
+                    <img class="img" id="p12" src="0.png" />
+                    <img class="img" id="p13" src="0.png" />
+                </div>
+                <div class="recuadroPuntos">
+                    <!-- arriba 2 -->
+                    <img class="img" id="p21" src="0.png" />
+                    <img class="img" id="p22" src="0.png" />
+                    <img class="img" id="p23" src="0.png" />
+                </div>
+                <div class="recuadroPuntos">
+                    <!-- abajo 1 -->
+                    <img class="img" id="p14" src="0.png" />
+                    <img class="img" id="p15" src="0.png" />
+                    <img class="img" id="p16" src="0.png" />
+                </div>
+                <div class="recuadroPuntos">
+                    <!-- abajo 2 -->
+                    <img class="img" id="p24" src="0.png" />
+                    <img class="img" id="p25" src="0.png" />
+                    <img class="img" id="p26" src="0.png" />
+                </div>
+
+                <div class="dis21">
+                    <input type="button" id="r1" value="-" class="btsMas">
+                    <h1 id="p1"></h1>
+                </div>
+                <div class="disIn">
+                    <p id="max"></p>
+                    <input type="button" id="fin" value="Fin" class="botFin">   
+                </div>
+                
+                <div class="dis22">
+                    <input type="button" id="r2" value="-"class="btsMas">
+                    <h1 id="p2"></h1>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            $(document).ready(function(){
+
+var max,p1,p2;
+inicio();
+
+$('#inicio').on('click', fnInicio);
+$('#a24').on('click', fnMax24);
+$('#a30').on('click', fnMax30);
+$('#fin').on('click', fnFin);
+$('#s1').on('click', fnSuma1);
+$('#r1').on('click', fnResta1);
+$('#s2').on('click', fnSuma2);
+$('#r2').on('click', fnResta2);
+
+function inicio() {
+    max = 30;
+    $('#max').html('A 30');
+    $('#eq1').val('');
+    $('#eq2').val('');
+    p1=0;
+    p2=0;
+    $('#p1').html(p1);
+    $('#p2').html(p2);
+    $('.img').attr('src',"0.png");
+}
+
+
+
+
+function fnMax24() {
+    max = 24;
+    $('#max').html('A 24');
+}
+function fnMax30() {
+    max = 30;
+    $('#max').html('A 30');
+}
+
+
+
+
+
+
+
+function fnInicio() {
+    ne1 = $('#eq1').val();
+    ne2 = $('#eq2').val();
+    $('#ne1').html(ne1);
+    $('#ne2').html(ne2);
+
+
+    $('#pant1').removeClass('visible').addClass('oculto');
+    $('#pant2').removeClass('oculto').addClass('visible');
+}
+
+function fnFin() {
+    inicio();
+    $('#pant2').removeClass('visible').addClass('oculto');
+    $('#pant1').removeClass('oculto').addClass('visible');
+}
+
+function fnSuma1() { 
+    if (p1<max) { p1++; }
+    $('#p1').html(p1);
+    palitos(1);
+    //if (p1==max) { alert('Gano el 1'); }
+}
+function fnResta1() { 
+    if (p1>0) { p1--; }
+    $('#p1').html(p1);
+    palitos(1);
+}
+function fnSuma2() { 
+    if (p2<max) { p2++; }
+    $('#p2').html(p2);
+    palitos(2);
+    //if (p2==max) { alert('Gano el 2'); }
+}
+function fnResta2() { 
+    if (p2>0) { p2--; }
+    $('#p2').html(p2);
+    palitos(2);
+}
+
+
+function palitos(e) {
+    if (e==1) { pad = p1; }
+    if (e==2) { pad = p2; }
+
+    for (i=1; i<=6; i++) {
+        // genero el id que le corresponde a cada imagen
+        id = '#p'+e+i;
+        if (max==24 && i==3 && pad>=2) {
+                $(id).attr('src','2.png');
+                pad = pad - 2;	
+        } else {
+            if (pad>=5) {
+                $(id).attr('src','5.png');
+                pad = pad - 5;
+            } else {
+                // 0 1 2 3 4
+                $(id).attr('src',pad+'.png');
+                pad=0;
+            }
+        }
+    }
+}
+});
+        </script>
+	</body>	
+</html>
